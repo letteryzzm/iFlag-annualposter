@@ -1,0 +1,29 @@
+<view class="container">
+  <view class="header">
+    <text class="title">选择海报模板</text>
+  </view>
+
+  <view class="templates-grid">
+    <!-- 前四个实际模板 -->
+    <view class="template-item {{currentTemplate.id === template.id ? 'active' : ''}}"
+      wx:for="{{templates}}" 
+      wx:key="id"
+      wx:for-item="template"
+      data-id="{{template.id}}"
+      bindtap="onTemplateSelect">
+      <image class="template-preview" src="/images/template{{template.id}}.png" mode="aspectFill"/>
+      <text class="template-name">{{template.name}}</text>
+    </view>
+
+    <!-- 两个占位模板 -->
+    <view class="template-item coming-soon" wx:for="{{2}}" wx:key="*this">
+      <view class="template-preview placeholder">
+        <text>还在设计~</text>
+      </view>
+    </view>
+  </view>
+
+  <button class="generate-btn" bindtap="onGenerate">
+    选好了！
+  </button>
+</view> 

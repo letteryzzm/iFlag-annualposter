@@ -1,0 +1,45 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom)); /* 为底部导航留出空间 */
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 80rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+}
+
+.start-btn-container {
+  margin-top: 48rpx;
+}
+
+.start-btn {
+  width: 240rpx;
+  height: 80rpx;
+  background: #000;
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  /* 移除 line-height，使用 flex 布局实现垂直居中 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} 

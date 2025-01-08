@@ -1,0 +1,42 @@
+<view class="container">
+  <view class="header">
+    <text class="title">历史记录</text>
+  </view>
+
+  <view class="history-list" wx:if="{{!isLoading && history.length > 0}}">
+    <view class="history-item" wx:for="{{history}}" wx:key="id">
+      <view class="item-content">
+        <image class="item-poster" 
+               src="{{item.imageUrl}}" 
+               mode="aspectFill"
+               bindtap="onPreview"
+               data-url="{{item.imageUrl}}"
+        />
+        
+        <view class="item-right">
+          <text class="item-time">{{item.createTime}}</text>
+          
+          <view class="delete-icon" 
+                bindtap="onDelete" 
+                data-index="{{index}}"
+                hover-class="icon-hover">
+            <image class="icon" src="/images/delete.png" />
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:elif="{{!isLoading && history.length === 0}}">
+    <image class="empty-icon" src="/images/empty.png" />
+    <text class="empty-text">还没有生成过Flag海报</text>
+    <navigator url="/pages/input1/input1" class="create-btn" hover-class="btn-hover">
+      立即创建
+    </navigator>
+  </view>
+
+  <view class="loading" wx:if="{{isLoading}}">
+    <view class="loading-icon"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+</view> 

@@ -1,0 +1,39 @@
+<view class="container">
+  <view class="poster-container">
+    <!-- 加载中 -->
+    <view class="loading-wrapper" wx:if="{{loading}}">
+      <view class="loading"></view>
+      <text>正在生成海报...</text>
+    </view>
+    
+    <!-- 错误状态 -->
+    <view class="error-wrapper" wx:elif="{{error}}">
+      <icon type="warn" size="64" color="#999"/>
+      <text>生成失败，请返回重试</text>
+    </view>
+    
+    <!-- 显示海报 -->
+    <block wx:elif="{{imageUrl}}">
+      <image 
+        class="poster" 
+        src="{{imageUrl}}" 
+        mode="widthFix"
+        show-menu-by-longpress
+        binderror="onImageError"
+      />
+      <!-- 操作按钮 -->
+      <view class="btn-group">
+        <button class="action-btn save" bindtap="onSave" hover-class="btn-hover">
+          <image class="btn-icon" src="/images/download.png" />
+          <text>保存到相册</text>
+        </button>
+        <button class="action-btn home" bindtap="onBackHome" hover-class="btn-hover">
+          <image class="btn-icon" src="/images/home.png" />
+          <text>回到首页</text>
+        </button>
+      </view>
+    </block>
+  </view>
+
+ 
+</view> 

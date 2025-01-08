@@ -1,0 +1,63 @@
+<view class="container">
+  <!-- 区域1: 标题 -->
+  <view class="header">
+    <text class="title">选择你的Flag</text>
+  </view>
+
+  <!-- 区域2: 计划选择区 -->
+  <view class="plans-section">
+    <view class="marquee-container">
+      <!-- 六行滚动内容 -->
+      <block wx:for="{{planGroups}}" wx:key="*this" wx:for-item="group" wx:for-index="rowIndex">
+        <view class="marquee-row {{rowIndex % 2 === 1 ? 'reverse' : ''}} {{isPaused[rowIndex] ? 'paused' : ''}}"
+          style="animation-duration: {{15 + rowIndex * 5}}s; transform: translateX({{rowOffsets[rowIndex]}}px);"
+          data-row="{{rowIndex}}"
+          bindtouchstart="touchStart"
+          bindtouchmove="touchMove"
+          bindtouchend="touchEnd">
+          <view class="plan-items">
+            <view class="plan-item {{item.selected ? 'active' : ''}}"
+              wx:for="{{group}}" 
+              wx:key="id"
+              data-plan="{{item}}"
+              data-row="{{rowIndex}}"
+              bindtap="onPlanSelect">
+              {{item.title}}
+            </view>
+            <!-- 复制一份实现无缝滚动 -->
+            <view class="plan-item {{item.selected ? 'active' : ''}}"
+              wx:for="{{group}}" 
+              wx:key="id"
+              data-plan="{{item}}"
+              data-row="{{rowIndex}}"
+              bindtap="onPlanSelect">
+              {{item.title}}
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 区域3: 自定义输入区 -->
+  <view class="custom-section">
+    <view class="custom-input-wrapper">
+      <input 
+        class="custom-input"
+        type="text"
+        placeholder="这里写下独属于你的flag~"
+        value="{{customPlan}}"
+        bindinput="onCustomInput"
+        bindconfirm="onAddCustomPlan"
+      />
+      <image 
+        class="confirm-btn"
+        src="/images/yes.png"
+        bindtap="onAddCustomPlan"
+      />
+    </view>
+    <view class="submit-btn-container">
+      <button class="submit-btn" bindtap="onNext">立完flag了!</button>
+    </view>
+  </view>
+</view> 
