@@ -17,6 +17,13 @@
   justify-content: center;
 }
 
+.poster-canvas {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  pointer-events: none;
+}
+
 .loading-wrapper,
 .error-wrapper {
   display: flex;
@@ -121,4 +128,4 @@
 .tab-icon {
   width: 48rpx;
   height: 48rpx;
-} 
+}

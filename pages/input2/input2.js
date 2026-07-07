@@ -4,23 +4,19 @@ Page({
     templates: [
       {
         id: 1,
-        name: '切尔西金',
-        workflowId: '7457167011132342335'
+        name: '切尔西金'
       },
       {
         id: 2,
-        name: '少女心粉',
-        workflowId: '7457170112640237580'
+        name: '少女心粉'
       },
       {
         id: 3,
-        name: '蒂芙尼绿',
-        workflowId: '7457171368824946697'
+        name: '蒂芙尼绿'
       },
       {
         id: 4,
-        name: '圣光白·磁光',
-        workflowId: '7457170889567649829'
+        name: '圣光白·磁光'
       }
     ],
     currentTemplate: null
@@ -35,7 +31,7 @@ Page({
   },
 
   onTemplateSelect(e) {
-    const templateId = e.currentTarget.dataset.id
+    const templateId = Number(e.currentTarget.dataset.id)
     const template = this.data.templates.find(t => t.id === templateId)
     this.setData({ currentTemplate: template })
   },
@@ -50,14 +46,14 @@ Page({
     }
 
     const plans = this.data.plans.map(plan => plan.toString())
-    
+
     console.log('准备传递的参数:', {
       plans,
-      workflowId: this.data.currentTemplate.workflowId
+      templateId: this.data.currentTemplate.id
     })
 
     wx.navigateTo({
-      url: `/pages/output/output?plans=${encodeURIComponent(JSON.stringify(plans))}&workflowId=${this.data.currentTemplate.workflowId}`
+      url: `/pages/output/output?plans=${encodeURIComponent(JSON.stringify(plans))}&templateId=${this.data.currentTemplate.id}`
     })
   }
-}) 
+})

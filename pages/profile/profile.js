@@ -1,3 +1,7 @@
+function isRemoteUrl(url) {
+  return /^https?:\/\//i.test(url)
+}
+
 Page({
   data: {
     history: [],
@@ -32,36 +36,58 @@ Page({
     });
   },
 
+  async resolveAlbumFilePath(imageUrl) {
+    if (!isRemoteUrl(imageUrl)) {
+      return imageUrl
+    }
+
+    const downloadRes = await new Promise((resolve, reject) => {
+      wx.downloadFile({
+        url: imageUrl,
+        success: (res) => {
+          if (res.statusCode === 200) {
+            resolve(res);
+          } else {
+            reject(new Error(`下载失败: ${res.statusCode}`));
+          }
+        },
+        fail: reject
+      });
+    });
+
+    return downloadRes.tempFilePath
+  },
+
+  saveImageToAlbum(filePath) {
+    return new Promise((resolve, reject) => {
+      wx.saveImageToPhotosAlbum({
+        filePath,
+        success: resolve,
+        fail: reject
+      });
+    });
+  },
+
+  removeSavedFile(filePath) {
+    if (!filePath || isRemoteUrl(filePath)) {
+      return
+    }
+
+    wx.removeSavedFile({
+      filePath,
+      fail: () => {}
+    })
+  },
+
   // 下载图片
   async onDownload(e) {
     const { imageUrl } = e.currentTarget.dataset;
     
     try {
       wx.showLoading({ title: '下载中...' });
-      
-      // 下载图片
-      const downloadRes = await new Promise((resolve, reject) => {
-        wx.downloadFile({
-          url: imageUrl,
-          success: (res) => {
-            if (res.statusCode === 200) {
-              resolve(res);
-            } else {
-              reject(new Error(`下载失败: ${res.statusCode}`));
-            }
-          },
-          fail: reject
-        });
-      });
 
-      // 保存到相册
-      await new Promise((resolve, reject) => {
-        wx.saveImageToPhotosAlbum({
-          filePath: downloadRes.tempFilePath,
-          success: resolve,
-          fail: reject
-        });
-      });
+      const filePath = await this.resolveAlbumFilePath(imageUrl);
+      await this.saveImageToAlbum(filePath);
 
       wx.showToast({
         title: '保存成功',
@@ -89,11 +115,13 @@ Page({
       success: (res) => {
         if (res.confirm) {
           const history = [...this.data.history];
+          const removedRecord = history[index];
           history.splice(index, 1);
           
           try {
             wx.setStorageSync('flag_history', history);
             this.setData({ history });
+            this.removeSavedFile(removedRecord && removedRecord.imageUrl);
             wx.showToast({
               title: '删除成功',
               icon: 'success'
@@ -109,4 +137,4 @@ Page({
       }
     });
   }
-}) 
+})

@@ -1,4 +1,10 @@
 <view class="container">
+  <canvas
+    canvas-id="posterCanvas"
+    class="poster-canvas"
+    style="width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
+  ></canvas>
+
   <view class="poster-container">
     <!-- 加载中 -->
     <view class="loading-wrapper" wx:if="{{loading}}">
@@ -24,7 +30,7 @@
       <!-- 操作按钮 -->
       <view class="btn-group">
         <button class="action-btn save" bindtap="onSave" hover-class="btn-hover">
-          <image class="btn-icon" src="/images/download.png" />
+          <image class="btn-icon" src="/images/save.png" />
           <text>保存到相册</text>
         </button>
         <button class="action-btn home" bindtap="onBackHome" hover-class="btn-hover">
@@ -35,5 +41,4 @@
     </block>
   </view>
 
- 
-</view> 
+</view>

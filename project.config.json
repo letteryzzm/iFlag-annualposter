@@ -29,7 +29,18 @@
       "generatePoster": {
         "timeout": 20
       }
-    }
+    },
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
   "condition": {},
   "editorSetting": {
@@ -37,5 +48,6 @@
     "tabSize": 2
   },
   "cloudfunctionRoot": "cloudfunctions/",
-  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
+  "simulatorPluginLibVersion": {}
 }
