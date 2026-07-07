@@ -1,0 +1,19 @@
+{
+  "$schema": "https://static.cloudbase.net/cli/cloudbaserc.schema.json",
+  "envId": "cloud1-d6gsqr214201333f5",
+  "functionRoot": "cloudfunctions",
+  "functions": [
+    {
+      "name": "posterHistory",
+      "dir": "cloudfunctions/posterHistory",
+      "runtime": "Nodejs20.19",
+      "handler": "index.main",
+      "timeout": 20,
+      "installDependency": false,
+      "ignore": [
+        ".git",
+        ".git/**"
+      ]
+    }
+  ]
+}
