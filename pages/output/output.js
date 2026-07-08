@@ -88,7 +88,7 @@ Page({
         loading: false
       })
 
-      await this.saveHistory({
+      this.saveHistory({
         imageUrl,
         plans,
         template
@@ -303,46 +303,7 @@ Page({
     })
   },
 
-  readFileAsBase64(filePath) {
-    return new Promise((resolve, reject) => {
-      wx.getFileSystemManager().readFile({
-        filePath,
-        encoding: 'base64',
-        success: (res) => resolve(res.data),
-        fail: reject
-      })
-    })
-  },
-
-  async saveHistory({ imageUrl, plans, template }) {
-    this.saveLocalHistory({
-      imageUrl,
-      plans,
-      template
-    })
-
-    try {
-      const imageBase64 = await this.readFileAsBase64(imageUrl)
-      const result = await wx.cloud.callFunction({
-        name: 'posterHistory',
-        data: {
-          action: 'save',
-          imageBase64,
-          plans,
-          templateId: template.id,
-          templateName: template.name
-        }
-      })
-
-      if (!result.result || !result.result.success) {
-        throw new Error(result.result?.error?.message || '云端历史保存失败')
-      }
-    } catch (error) {
-      console.warn('云端历史保存失败，已保留本地历史:', error)
-    }
-  },
-
-  saveLocalHistory({ imageUrl, plans, template }) {
+  saveHistory({ imageUrl, plans, template }) {
     try {
       const history = wx.getStorageSync('flag_history') || []
       const newRecord = {
@@ -351,8 +312,7 @@ Page({
         plans,
         templateId: template.id,
         templateName: template.name,
-        createTime: new Date().toLocaleString(),
-        source: 'local'
+        createTime: new Date().toLocaleString()
       }
 
       const nextHistory = [newRecord, ...history]

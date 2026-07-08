@@ -17,10 +17,6 @@
       {
         "packageJsonPath": "./cloudfunctions/generatePoster/package.json",
         "miniprogramNpmDistDir": "./miniprogram/"
-      },
-      {
-        "packageJsonPath": "./cloudfunctions/posterHistory/package.json",
-        "miniprogramNpmDistDir": "./miniprogram/"
       }
     ],
     "packNpmManually": true,
@@ -31,9 +27,6 @@
     },
     "cloudfunctionConfig": {
       "generatePoster": {
-        "timeout": 20
-      },
-      "posterHistory": {
         "timeout": 20
       }
     },

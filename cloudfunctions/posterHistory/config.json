@@ -1,6 +1,0 @@
-{
-  "timeout": 20,
-  "envVariables": {},
-  "runtime": "Nodejs20.19",
-  "triggers": []
-}

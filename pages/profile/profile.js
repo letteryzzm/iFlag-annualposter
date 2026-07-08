@@ -12,47 +12,17 @@ Page({
     this.loadHistory()
   },
 
-  async loadHistory() {
+  loadHistory() {
     this.setData({ isLoading: true })
-
     try {
-      const cloudHistory = await this.loadCloudHistory()
-      const localHistory = this.loadLocalHistory()
-
+      const history = wx.getStorageSync('flag_history') || []
       this.setData({
-        history: cloudHistory.length ? cloudHistory : localHistory,
+        history,
         isLoading: false
       })
     } catch (error) {
-      console.error('加载云端历史记录失败，使用本地历史:', error)
-      this.setData({
-        history: this.loadLocalHistory(),
-        isLoading: false
-      })
-    }
-  },
-
-  async loadCloudHistory() {
-    const result = await wx.cloud.callFunction({
-      name: 'posterHistory',
-      data: {
-        action: 'list'
-      }
-    })
-
-    if (!result.result || !result.result.success) {
-      throw new Error(result.result?.error?.message || '加载云端历史失败')
-    }
-
-    return result.result.data.history || []
-  },
-
-  loadLocalHistory() {
-    try {
-      return wx.getStorageSync('flag_history') || []
-    } catch (error) {
-      console.error('加载本地历史记录失败:', error)
-      return []
+      console.error('加载历史记录失败:', error)
+      this.setData({ isLoading: false })
     }
   },
 
@@ -151,31 +121,6 @@ Page({
     }
   },
 
-  async deleteCloudHistory(record) {
-    const result = await wx.cloud.callFunction({
-      name: 'posterHistory',
-      data: {
-        action: 'delete',
-        id: record.id
-      }
-    })
-
-    if (!result.result || !result.result.success) {
-      throw new Error(result.result?.error?.message || '删除云端历史失败')
-    }
-  },
-
-  deleteLocalHistory(index) {
-    const history = this.loadLocalHistory()
-    const removedRecord = history[index]
-
-    history.splice(index, 1)
-    wx.setStorageSync('flag_history', history)
-    this.removeSavedFile(removedRecord && removedRecord.imageUrl)
-
-    return history
-  },
-
   // 删除记录
   onDelete(e) {
     const { index } = e.currentTarget.dataset
@@ -190,16 +135,12 @@ Page({
 
         const history = [...this.data.history]
         const removedRecord = history[index]
+        history.splice(index, 1)
 
         try {
-          if (removedRecord && removedRecord.source === 'cloud') {
-            await this.deleteCloudHistory(removedRecord)
-            history.splice(index, 1)
-            this.setData({ history })
-          } else {
-            this.setData({ history: this.deleteLocalHistory(index) })
-          }
-
+          wx.setStorageSync('flag_history', history)
+          this.setData({ history })
+          this.removeSavedFile(removedRecord && removedRecord.imageUrl)
           wx.showToast({
             title: '删除成功',
             icon: 'success'
